@@ -1,4 +1,4 @@
-package practical_algorithms;
+package practical_algorithms.basics;
 
 import java.util.Scanner;
 

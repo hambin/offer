@@ -1,8 +1,6 @@
 package reflection;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.*;
 
 /**
  * Created by hanbing on 2017/7/6.
@@ -19,6 +17,12 @@ public class Main {
         demo4();
 
         demo5();
+
+        demo6();
+
+        demo7();
+
+        demo8();
     }
 
     /**
@@ -102,7 +106,25 @@ public class Main {
      * Demo6: 通过Java反射机制得到类的一些属性： 继承的接口，父类，函数信息，成员信息，类型等
      * @throws ClassNotFoundException
      */
+    public static void demo6() throws ClassNotFoundException {
+        Class aClass = Class.forName("reflection.SuperMan");
+        Class[] interfaces = aClass.getInterfaces();
+        for(int i = 0; i < interfaces.length; i++){
+            System.out.println("实现的接口为 ：" + interfaces[i]);
+        }
+        System.out.println("继承的类为：" + aClass.getSuperclass());
+        Method[] methods = aClass.getMethods();
+        for(int i = 0; i < methods.length; i++){
+            System.out.println("包含的函数有：" + methods[i].getName());
+            System.out.println("返回类型为：" + methods[i].getReturnType());
+            System.out.println("修饰符为：" + Modifier.toString(methods[i].getModifiers()));
+        }
 
+        Field[] fields = aClass.getDeclaredFields();
+        for(int i = 0; i < fields.length; i++){
+            System.out.println("包含的成员有：" + fields[i]);
+        }
+    }
 
     /**
      * Demo7: 通过Java反射机制调用类方法
@@ -115,6 +137,14 @@ public class Main {
      * @throws InstantiationException
      */
 
+    public static void demo7() throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InstantiationException, InvocationTargetException {
+        Class aClass = Class.forName("reflection.SuperMan");
+        Method method = aClass.getMethod("fly");
+        method.invoke(aClass.newInstance());
+
+        Method methodWithArg = aClass.getMethod("walk", int.class);
+        methodWithArg.invoke(aClass.newInstance(), 100);
+    }
 
     /**
      * Demo8: 通过Java反射机制得到类加载器信息
@@ -129,6 +159,10 @@ public class Main {
      *
      * @throws ClassNotFoundException
      */
+    public static void demo8() throws ClassNotFoundException {
+        Class aClass = Class.forName("reflection.SuperMan");
+        System.out.println(aClass.getClassLoader().getClass().getName());
+    }
 
 
 }
